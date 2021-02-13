@@ -6,6 +6,7 @@ import com.enzitechnologies.sakinbank.model.Loan;
 import com.enzitechnologies.sakinbank.model.Token;
 import com.enzitechnologies.sakinbank.repository.AccountRepository;
 import com.hedera.hashgraph.sdk.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,10 +16,13 @@ import java.util.concurrent.TimeoutException;
 @Service
 public class AccountService {
 
+    @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
     private TokenService tokenService;
 
+    @Autowired
     private DepositService depositService;
 
 
@@ -182,7 +186,7 @@ public class AccountService {
 //  get account by username
     public Account getAccountByName(String username){
 
-        return accountRepository.findByUserName(username);
+        return accountRepository.findByUsername(username);
 
     }
 

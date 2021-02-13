@@ -7,18 +7,18 @@ import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrecheckStatusException;
 import com.hedera.hashgraph.sdk.ReceiptStatusException;
 import com.hedera.hashgraph.sdk.TransactionId;
-import org.dom4j.rule.Mode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 @Controller
 public class MasterController {
 
+    @Autowired
     private AccountService accountService;
 
     @RequestMapping("/")
@@ -42,6 +42,7 @@ public class MasterController {
     public String login(@RequestParam("username") String username, Model model){
 
         Account account = accountService.getAccountByName(username);
+
         if (account != null){
 
             model.addAttribute("account", account);
@@ -50,6 +51,11 @@ public class MasterController {
         }
 
         return "redirect:/loginPage?login_failed";
+    }
+
+    @GetMapping("/index")
+    public String showIndex(){
+        return "index";
     }
 
     @PostMapping("/register")

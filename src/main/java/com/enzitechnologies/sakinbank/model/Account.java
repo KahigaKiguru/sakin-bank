@@ -15,7 +15,7 @@ public class Account {
     private String accountId;
 
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     private String private_key;
 
@@ -52,7 +52,7 @@ public class Account {
 
     public Account(
             String account_id,
-            String userName,
+            String username,
             String private_key,
             String public_key,
             long account_balance,
@@ -66,7 +66,7 @@ public class Account {
     ) {
 
         this.accountId = account_id;
-        this.userName = userName;
+        this.username = username;
         this.private_key = private_key;
         this.public_key = public_key;
         this.account_balance = account_balance;
@@ -85,12 +85,12 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPrivate_key() {
