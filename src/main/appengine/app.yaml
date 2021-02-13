@@ -3,4 +3,4 @@ env: flex
 
 handlers:
   url: /.*
-  script:
+  script: this field is required, but ignored
