@@ -2,5 +2,5 @@ runtime: java
 env: flex
 
 handlers:
-  url: /.*
+  url: /
   script: this field is required, but ignored
