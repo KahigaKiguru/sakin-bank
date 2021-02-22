@@ -200,9 +200,9 @@ public class MasterController {
 
         if ((amount > 0) && (amount <= sender.getSSP_Balance())) {
 
-//            TransactionId transactionId = accountService.shareSSP(recipient, sender, amount);
-//
-//            assert transactionId.accountId != null;
+            TransactionId transactionId = accountService.shareSSP(recipient, sender, amount);
+
+            assert transactionId.accountId != null;
 
             accountService.getAccountBalance(sender_id);
 
