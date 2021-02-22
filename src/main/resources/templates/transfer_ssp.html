@@ -1,10 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+            rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"
+            rel="stylesheet">
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>Sakin Wallet</title>
 </head>
 <body>
+<header>
+    <!--Navbar-->
+    <nav
+            class="navbar navbar-expand-lg navbar-dark secondary-color fixed-top">
 
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#">Transfer SSP</a>
+            <form class="form-inline">
+                <a class="btn btn-outline-white" th:href="@{/savingsPointsPage(accountId=${account.accountId})}" type="submit">My Savings Points</a>
+                <a class="btn btn-outline-white" th:href="@{/transferSSPPage(accountId=${account.accountId})}" type="submit">Transfer SSP</a>
+                <a class="btn btn-outline-white" th:href="@{/logout}" type="submit">Log out</a>
+
+            </form>
+        </div>
+    </nav>
+    <!--/.Navbar-->
+    <br>
+    <br>
+    <br>
+
+    <div class="view"
+         style="background-image: url(''); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+        <div
+                class="mask d-flex  justify-content-center align-items-center">
+            <!-- Content -->
+        </div>
+    </div>
+</header>
+<br>
+<br>
+<br>
+<main>
+    <div class="container">
+        <br>
+        <label> Sakin Savings Points Balance : </label>
+        <h2>
+            <span th:text="${account.SSP_Balance}" th:remove="tag">title</span>
+            <i> ssp</i>
+        </h2>
+
+        <form method="POST" class="form-signin" th:action="@{/transferSSP/{sender_id}(sender_id=${sender_id})}">
+            <br>
+            <br>
+            <div class="form-group">
+                <label> Recipient's Account Id : </label>
+                <input type="text"  name="recipient_id" class="form-control" placeholder="Recipient's Account Id" required autofocus="autofocus" />
+                <br>
+                <label> Amount : </label>
+                <input type="number"  name="amount" class="form-control" placeholder="Amount" required autofocus="autofocus" />
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Transfer SSP</button>
+                <br>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+
+<footer></footer>
 </body>
 </html>

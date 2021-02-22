@@ -42,13 +42,15 @@ public class MasterController {
 
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
-                        Model model){
+                        Model model) throws TimeoutException, PrecheckStatusException {
 
         Account account = accountService.getAccountByName(username);
 
         if (account != null){
 
             model.addAttribute("account", account);
+
+            accountService.getAccountBalance(account.getAccountId());
 
             return "index";
         }
@@ -64,7 +66,11 @@ public class MasterController {
     }
 
     @GetMapping("/index")
-    public String showIndex(){
+    public String showIndex(@RequestParam("accountId") String accountId,  Model model) throws TimeoutException, PrecheckStatusException {
+
+
+        model.addAttribute("account", accountService.getAccountById(accountId));
+        model.addAttribute("bal", accountService.getAccountBalance(accountId));
         return "index";
     }
 
@@ -162,38 +168,51 @@ public class MasterController {
     public String showSSPPage(@RequestParam("accountId") String accountId, Model model){
         model.addAttribute("account", accountService.getAccountById(accountId));
 
+
         return "ssp_page";
     }
 
     @GetMapping("/transferSSPPage")
-    public String transferSSPPage(@RequestParam("account_id") String accountId, Model model){
+    public String transferSSPPage(@RequestParam("accountId") String accountId, Model model){
 
         Iterable<Account> all_accounts = accountService.getAllAccounts();
 
         Account sender_account = accountService.getAccountById(accountId);
 
-        model.addAttribute("accounts", all_accounts);
+        model.addAttribute("sender_id", sender_account.getAccountId());
 
-        model.addAttribute("ssp_balance", sender_account.getSSP_Balance());
+        model.addAttribute("account", sender_account);
+
+        model.addAttribute("all_accounts", all_accounts);
 
         return "transfer_ssp";
 
     }
 
-    @PostMapping("/transferSSP")
-    public void transferSSP(@RequestParam("sender_id") String sender_id,
+    @PostMapping("/transferSSP/{sender_id}")
+    public String transferSSP(@PathVariable("sender_id") String sender_id,
                             @RequestParam("recipient_id") String recipient_id,
-                            @RequestParam("amount") long amount) throws PrecheckStatusException, ReceiptStatusException, TimeoutException {
+                            @RequestParam("amount") long amount,
+                              Model model) throws PrecheckStatusException, ReceiptStatusException, TimeoutException {
 
         Account sender = accountService.getAccountById(sender_id);
         Account recipient = accountService.getAccountById(recipient_id);
 
-        if (amount > 0){
+        if ((amount > 0) && (amount <= sender.getSSP_Balance())) {
 
-            TransactionId transactionId = accountService.shareSSP(sender, recipient, amount);
+//            TransactionId transactionId = accountService.shareSSP(recipient, sender, amount);
+//
+//            assert transactionId.accountId != null;
 
-            assert transactionId.accountId != null;
-        }
+            accountService.getAccountBalance(sender_id);
+
+            model.addAttribute("account", sender);
+
+            return "index";
+
+
+        }else
+            return null;
     }
 
 }

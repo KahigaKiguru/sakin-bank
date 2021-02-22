@@ -118,10 +118,8 @@ public class AccountService {
 
 //        Create a Hedera Token Transfer between sender and recipient
         TransactionRecord sspTransferRecord = new TransferTransaction()
-                .addTokenTransfer(TokenId.fromString(SSP.getTokenId()), AccountId.fromString(sender.getAccountId()), (amount * - 1))
-                .addTokenTransfer(TokenId.fromString(SSP.getTokenId()), AccountId.fromString(recipient.getAccountId()), amount)
-                .freezeWith(client)
-                .sign(PrivateKey.fromString(sender.getPrivate_key()))
+                .addTokenTransfer(TokenId.fromString(tokenService.getToken().getTokenId()), AccountId.fromString(sender.getAccountId()), (amount * - 1))
+                .addTokenTransfer(TokenId.fromString(tokenService.getToken().getTokenId()), AccountId.fromString(recipient.getAccountId()), amount)
                 .execute(client)
                 .getRecord(client);
 
@@ -395,5 +393,38 @@ public class AccountService {
         }
 
         return  total_ssp;
+    }
+
+//    get account balance
+    public long getAccountBalance(String accountId) throws TimeoutException, PrecheckStatusException {
+
+        Account account = accountRepository.findById(accountId).get();
+
+        Client client =
+                Client
+                        .forTestnet()
+                        .setOperator(
+                                AccountId
+                                        .fromString(account.getAccountId()),
+                                PrivateKey
+                                        .fromString(account.getPrivate_key()));
+
+
+        AccountBalance balance_query = new AccountBalanceQuery()
+                .setAccountId(AccountId.fromString(account.getAccountId()))
+                .execute(client);
+
+        long hbar_balance = balance_query.hbars.toTinybars()/100000000;
+
+        long ssp_balance = balance_query.token.get(TokenId.fromString(tokenService.getToken().getTokenId()));
+
+
+        account.setAccount_balance(hbar_balance);
+
+        account.setSSP_Balance(ssp_balance);
+
+        accountRepository.save(account);
+
+        return hbar_balance;
     }
 }

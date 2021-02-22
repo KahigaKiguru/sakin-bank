@@ -51,11 +51,29 @@
         </div>
     </div>
 </header>
+<br>
+<br>
+<br>
 <main>
     <div class="container">
+        <label> username : </label>
         <h2 th:text="${account.username}">Hello</h2>
         <br>
+        <label> Account ID : </label>
         <h2 th:text="${account.accountId}">Hello</h2>
+        <br>
+        <label> Hbar Balance : </label>
+        <h2>
+            <span th:text="${account.account_balance}" th:remove="tag">title</span>
+            <i>hbar</i>
+        </h2>
+        <br>
+        <label> Savings Points : </label>
+        <h2>
+            <span th:text="${account.SSP_Balance}" th:remove="tag">title</span>
+            <i> ssp</i>
+        </h2>
+
 
     </div>
 </main>
