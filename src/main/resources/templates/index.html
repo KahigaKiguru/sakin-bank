@@ -18,9 +18,49 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"
             rel="stylesheet">
     <meta charset="UTF-8">
+
     <title>Sakin Wallet</title>
 </head>
 <body>
+<header>
+    <!--Navbar-->
+    <nav
+            class="navbar navbar-expand-lg navbar-dark secondary-color fixed-top">
 
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#">Sakin Wallet</a>
+            <form class="form-inline">
+                <a class="btn btn-outline-white" th:href="@{/loadHbarPage(accountId=${account.accountId})}" type="submit">Load Hbar</a>
+                <a class="btn btn-outline-white" th:href="@{/savingsPointsPage(accountId=${account.accountId})}" type="submit">My Savings Points</a>
+                <a class="btn btn-outline-white" th:href="@{/logout}" type="submit">Log out</a>
+
+            </form>
+        </div>
+    </nav>
+    <!--/.Navbar-->
+    <br>
+    <br>
+    <br>
+
+    <div class="view"
+         style="background-image: url(''); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+        <div
+                class="mask d-flex  justify-content-center align-items-center">
+            <!-- Content -->
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <h2 th:text="${account.username}">Hello</h2>
+        <br>
+        <h2 th:text="${account.accountId}">Hello</h2>
+
+    </div>
+</main>
+
+
+<footer></footer>
 </body>
 </html>

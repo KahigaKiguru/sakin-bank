@@ -2,6 +2,7 @@ package com.enzitechnologies.sakinbank.controller;
 
 
 import com.enzitechnologies.sakinbank.model.Account;
+import com.enzitechnologies.sakinbank.model.Loan;
 import com.enzitechnologies.sakinbank.service.AccountService;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrecheckStatusException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
@@ -39,7 +41,8 @@ public class MasterController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username, Model model){
+    public String login(@RequestParam("username") String username,
+                        Model model){
 
         Account account = accountService.getAccountByName(username);
 
@@ -47,15 +50,31 @@ public class MasterController {
 
             model.addAttribute("account", account);
 
-            return "redirect:/index";
+            return "index";
         }
 
         return "redirect:/loginPage?login_failed";
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+
+        return "redirect:/loginPage?logged_out";
+
+    }
+
     @GetMapping("/index")
     public String showIndex(){
         return "index";
+    }
+
+    @GetMapping("/loadHbarPage")
+    public String loadHbarPage(
+            @RequestParam("accountId") String accountId,
+            Model model){
+                 model.addAttribute("account", accountService.getAccountById(accountId));
+
+        return "load_hbar";
     }
 
     @PostMapping("/register")
@@ -91,6 +110,21 @@ public class MasterController {
         }
     }
 
+    @GetMapping("/loansPage")
+    public String showLoansPage(@RequestParam("accountId") String accountId, Model model){
+
+        Account account = accountService.getAccountById(accountId);
+
+        List<Loan> loans = account.getLoans();
+
+        model.addAttribute("account", account);
+
+        model.addAttribute("loans", loans);
+
+        return "loans_page";
+
+    }
+
     @GetMapping("/borrowLoanPage")
     public String borrowLoanPage(@RequestParam("account_id") String account_id, Model model){
         Account borrower = accountService.getAccountById(account_id);
@@ -122,6 +156,13 @@ public class MasterController {
 
 
         return "borrow_loan";
+    }
+
+    @GetMapping("/savingsPointsPage")
+    public String showSSPPage(@RequestParam("accountId") String accountId, Model model){
+        model.addAttribute("account", accountService.getAccountById(accountId));
+
+        return "ssp_page";
     }
 
     @GetMapping("/transferSSPPage")
