@@ -214,6 +214,7 @@ public class AccountService {
 
         Account sakin = accountRepository.findById("0.0.14410").get();
 
+//        Transfer hbar from depositor to sakin
         TransactionId transferId = transferHbar(sakin, depositor, Hbar.from(amount));
 
 //        Get depositor's account balance from Hedera
@@ -222,7 +223,7 @@ public class AccountService {
                 .execute(client)
                 .hbars;
 
-        depositor.setAccount_balance(depositor_balance.toTinybars());
+        depositor.setAccount_balance(depositor_balance.toTinybars() / 100000000);
 
         accountRepository.save(depositor);
 
@@ -233,13 +234,13 @@ public class AccountService {
                 .hbars;
 
 //        update sakin account balance
-        sakin.setAccount_balance(sakin_balance.toTinybars());
+        sakin.setAccount_balance(sakin_balance.toTinybars() / 100000000);
 
 //        update database
         accountRepository.save(sakin);
 
 //        transfer Sakin Savings Points to the depositor
-        transferSSP(sakin, depositor, getSSPEarned(amount));
+        transferSSP(depositor, sakin, getSSPEarned(amount));
 
         if (transferId != null){
 //          Instantiate a deposit object to keep a record record of the deposit

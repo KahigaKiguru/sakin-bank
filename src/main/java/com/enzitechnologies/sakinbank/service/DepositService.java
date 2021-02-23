@@ -2,6 +2,7 @@ package com.enzitechnologies.sakinbank.service;
 
 import com.enzitechnologies.sakinbank.model.Deposit;
 import com.enzitechnologies.sakinbank.repository.DepositRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Service
 public class DepositService {
 
+    @Autowired
     private DepositRepository depositRepository;
 
     public void getAllDeposits(){}

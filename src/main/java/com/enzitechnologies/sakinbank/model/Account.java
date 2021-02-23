@@ -34,14 +34,14 @@ public class Account {
     private Duration autoRenewPeriod;
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             fetch = FetchType.LAZY,
             mappedBy = "account"
     )
     private List<Deposit> deposits;
 
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             fetch = FetchType.LAZY,
             mappedBy = "account"
     )

@@ -34,6 +34,9 @@ public class Deposit {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date_of_deposit;
 
+    public Deposit() {
+    }
+
     public Deposit(
             String depositId,
             String account_id,

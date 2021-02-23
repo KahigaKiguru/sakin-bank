@@ -29,11 +29,10 @@
 
         <div class="container">
             <!-- Navbar brand -->
-            <a class="navbar-brand" href="#">Sakin Wallet</a>
+            <a class="navbar-brand" href="#">Make Hbar Deposit</a>
             <form class="form-inline">
-                <a class="btn btn-outline-white" th:href="@{/loadHbarPage(accountId=${account.accountId})}" type="submit">Load Hbar</a>
-                <a class="btn btn-outline-white" th:href="@{/makeDepositPage(accountId=${account.accountId})}" type="submit">Make Deposit</a>
-                <a class="btn btn-outline-white" th:href="@{/savingsPointsPage(accountId=${account.accountId})}" type="submit">My Savings Points</a>
+                <a class="btn btn-outline-white" th:href="@{/index(accountId=${account.accountId})}" type="submit">Home</a>
+                <a class="btn btn-outline-white" th:href="@{/transferSSPPage(accountId=${account.accountId})}" type="submit">Transfer SSP</a>
                 <a class="btn btn-outline-white" th:href="@{/logout}" type="submit">Log out</a>
 
             </form>
@@ -57,24 +56,24 @@
 <br>
 <main>
     <div class="container">
-        <label> username : </label>
-        <h2 th:text="${account.username}">Hello</h2>
-        <br>
-        <label> Account ID : </label>
-        <h2 th:text="${account.accountId}">Hello</h2>
         <br>
         <label> Hbar Balance : </label>
         <h2>
             <span th:text="${account.account_balance}" th:remove="tag">title</span>
-            <i>hbar</i>
-        </h2>
-        <br>
-        <label> Savings Points : </label>
-        <h2>
-            <span th:text="${account.SSP_Balance}" th:remove="tag">title</span>
-            <i> ssp</i>
+            <i> hbar</i>
         </h2>
 
+        <form method="POST" class="form-signin" th:action="@{/deposit/{accountId}(accountId=${account.accountId})}">
+            <br>
+            <br>
+            <div class="form-group">
+                <label> Amount : </label>
+                <input type="number"  name="amount" class="form-control" placeholder="Amount" required autofocus="autofocus" />
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Deposit Hbar</button>
+                <br>
+            </div>
+        </form>
 
     </div>
 </main>

@@ -93,14 +93,29 @@ public class MasterController {
         return "redirect:/registerPage?registration_error";
     }
 
-    @PostMapping("/deposit")
-    public void makeDeposit(@RequestParam("accountID") String accountId,
-                            @RequestParam("amount") long amount) throws PrecheckStatusException, ReceiptStatusException, TimeoutException {
+    @GetMapping("/makeDepositPage")
+    public String depositPage(@RequestParam("accountId") String accountId, Model model){
+
+        model.addAttribute("account", accountService.getAccountById(accountId));
+
+        return "make_deposit";
+
+    }
+
+    @PostMapping("/deposit/{accountId}")
+    public String makeDeposit(@PathVariable("accountId") String accountId,
+                            @RequestParam("amount") long amount, Model model) throws PrecheckStatusException, ReceiptStatusException, TimeoutException {
 
         Account depositor = accountService.getAccountById(accountId);
+
         if(depositor != null) {
             accountService.makeDeposit(depositor, amount);
+            model.addAttribute("account", depositor);
+
+            return "index";
         }
+
+        return null;
     }
 
     @PostMapping("/withdraw")
